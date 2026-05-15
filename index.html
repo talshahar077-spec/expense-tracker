@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
+  <title>מעקב הוצאות</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#080818"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="הוצאות"/>
+
+  <!-- Icons -->
+  <link rel="icon" href="icon-192.png" sizes="192x192"/>
+  <link rel="apple-touch-icon" href="icon-512.png"/>
+  <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png"/>
+  <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png"/>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body, #root {
+      height: 100%;
+      background: #080818;
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    /* Safe area for iPhone notch */
+    #root {
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React + Babel + Recharts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.10.1/Recharts.js"></script>
+
+  <!-- App -->
+  <script type="text/babel" data-presets="react" src="expense-tracker-pro.jsx"></script>
+
+  <script>
+    // Mount React app
+    window.addEventListener("DOMContentLoaded", () => {
+      // give Babel time to compile
+      setTimeout(() => {
+        if (window.App) {
+          ReactDOM.createRoot(document.getElementById("root"))
+            .render(React.createElement(window.App.default || window.App));
+        }
+      }, 500);
+    });
+
+    // Register Service Worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js")
+        .then(() => console.log("SW registered"))
+        .catch(e => console.log("SW error", e));
+    }
+  </script>
+</body>
+</html>
